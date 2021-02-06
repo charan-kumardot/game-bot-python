@@ -104,6 +104,7 @@
   
   .left-msg .msg-bubble {
     border-bottom-left-radius: 0;
+    background: var(--left-msg-bg);
   }
   
   .right-msg {
