@@ -86,8 +86,7 @@
     max-width: 450px;
     padding: 15px;
     border-radius: 15px;
-    background: rgb(22,34,187);
-    background: linear-gradient(328deg, rgba(22,34,187,1) 48%, rgba(207,75,197,1) 96%);
+    background: var(--left-msg-bg);
   }
   .msg-info {
     display: flex;
