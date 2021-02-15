@@ -133,30 +133,7 @@ def get_bot_response():
 
 
 
-def Bot(user_input_french):
-    exit_list = ['exit', 'see you later','bye', 'quit', 'break']
-    while(True):
-        user_input = GoogleTranslator(source='french', target='english').translate(user_input_french)
-        if(user_input.lower() in exit_list):
-          return "Chat with you later !"
-          break
-        else:
-          if(greeting_response(user_input)!= None):
-            return greeting_response(user_input)
-          else:              
-                i=0
-                link=Search(user_input)
-                #print(link)
-                if 'youtube' in user_input.lower() or 'link' in user_input.lower() or 'video' in user_input.lower():
-                    return link[0]
-                else:                
-                    while True:
-                        #print(link[i])
-                        lis=tokened_text(link[i])
-                        if bot_response(user_input, lis) != None:
-                            break
-                        i+=1
-                    return bot_response(user_input,lis)
+
                 
 
 def Bot(user_input_french):
