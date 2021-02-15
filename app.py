@@ -86,13 +86,40 @@ def Search(query):
     search_result_list = list(search(query, tld="co.in", num=10, stop=10, pause=1))
     return search_result_list
 
-
-def tokened_text(link):
-    article = Article(link)
-    article.download() 
-    article.parse() 
-    article.nlp()
-    sentence_list = nltk.sent_tokenize(article.text)
+def chatbot_query(query, index=0):
+    try:
+        fallback = 'Sorry, I cannot think of a reply for that.'
+        search_result_list = list(search(query, tld="co.in", num=10, stop=3, pause=1))
+        
+        page = requests.get(search_result_list[index])
+        #tree = html.fromstring(page.content)
+        #print(tree)
+        
+        soup = BeautifulSoup(page.content, features="lxml")
+        #print(soup)
+        #print(page.text)
+        article_text = ''
+        article = soup.findAll('p')
+        #print(article)
+        for element in article:
+            #print(element)
+            article_text += '\n' + ''.join(element.findAll(text = True))
+        #article_text = article_text.replace('\n', '')
+        if len(article_text) !=0:
+            return article_text
+        else:
+            return chatbot_query(query,index+1)
+    except IndexError:
+        return fallback
+def tokened_text(text):
+    #print(link)
+    #article = Article(link)
+    #article.download() 
+    #article.parse() 
+    #article.nlp()
+    #print(article.text)
+    sentence_list = nltk.sent_tokenize(text)
+    #print(sentence_list)
     return sentence_list
     
 
