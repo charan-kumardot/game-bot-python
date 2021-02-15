@@ -111,21 +111,12 @@ def chatbot_query(query, index=0):
             return chatbot_query(query,index+1)
     except IndexError:
         return fallback
-def tokened_text(text):
-    #print(link)
-    #article = Article(link)
-    #article.download() 
-    #article.parse() 
-    #article.nlp()
-    #print(article.text)
+
+def tokened_text(link):
+
     sentence_list = nltk.sent_tokenize(text)
-    #print(sentence_list)
     return sentence_list
     
-
-
-
-
 
 
 @app.route("/")
@@ -166,6 +157,37 @@ def Bot(user_input_french):
                             break
                         i+=1
                     return bot_response(user_input,lis)
+                
+
+def Bot(user_input_french):
+    #print("Gaming Bot: I am GAMING BOT. I will answer your queries about ANY GAME. If you want to exit, type Bye!")
+    exit_list = ['exit', 'see you later','bye', 'quit', 'break']
+    while(True):
+        user_input = GoogleTranslator(source='french', target='english').translate(user_input_french)
+        if(user_input.lower() in exit_list):
+          #print("Gaming Bot: Chat with you later !")
+            return "Chat with you later !"
+        else:
+          if(greeting_response(user_input)!= None):
+            #print("Gaming Bot: "+greeting_response(user_input))
+              return greeting_response(user_input)
+          else:              
+                i=0
+                link=Search(user_input)
+                #print(link)
+                if 'youtube' in user_input.lower() or 'link' in user_input.lower() or 'video' in user_input.lower():
+                    #print("Gaming Bot: "+link[0])
+                    return link[0]
+                else:                
+                    while True:
+                        #print(link[i])
+                        lis=tokened_text(chatbot_query(user_input))
+                        if bot_response(user_input, lis) != None:
+                            break
+                        i+=1
+                    #print("Gaming Bot: "+bot_response(user_input,lis))
+                    return bot_response(user_input,lis)
+
                 
                 
 if __name__ == "__main__":
