@@ -21,9 +21,6 @@ nltk.download('punkt', quiet=True)
 
 
 
-
-
-
 def greeting_response(text):
   text = text.lower()
   bot_greetings = ["howdy","hi", "hey", "what's good",  "hello","hey there","Bonjour!","Salut","Allô"]
@@ -86,6 +83,7 @@ def Search(query):
     search_result_list = list(search(query, tld="co.in", num=10, stop=10, pause=1))
     return search_result_list
 
+
 def chatbot_query(query, index=0):
     try:
         fallback = 'Sorry, I cannot think of a reply for that.'
@@ -111,10 +109,15 @@ def chatbot_query(query, index=0):
             return chatbot_query(query,index+1)
     except IndexError:
         return fallback
-
-def tokened_text(link):
-
+def tokened_text(text):
+    #print(link)
+    #article = Article(link)
+    #article.download() 
+    #article.parse() 
+    #article.nlp()
+    #print(article.text)
     sentence_list = nltk.sent_tokenize(text)
+    #print(sentence_list)
     return sentence_list
     
 
@@ -132,9 +135,6 @@ def get_bot_response():
 
 
 
-
-
-                
 
 def Bot(user_input_french):
     #print("Gaming Bot: I am GAMING BOT. I will answer your queries about ANY GAME. If you want to exit, type Bye!")
@@ -169,5 +169,6 @@ def Bot(user_input_french):
                 
 if __name__ == "__main__":
     app.run()
+
 
 
