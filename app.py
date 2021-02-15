@@ -1,22 +1,24 @@
 from flask import Flask, render_template, request
-from newspaper import Article
+#from newspaper import Article
+import requests
 import random
-import string 
+#import string 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import nltk
-import numpy as np
-import warnings
-from lxml import html
+#import numpy as np
+#import warnings
+#from lxml import html
 from googlesearch import search
 from bs4 import BeautifulSoup
-from deep_translator import GoogleTranslator
-
 
 app = Flask(__name__)
 app.static_folder = 'static'
 
 nltk.download('punkt', quiet=True)
+
+
+
 
 
 
@@ -30,8 +32,6 @@ def greeting_response(text):
   for word in text.split():
     if word in user_greetings:
       return random.choice(bot_greetings)
-
-
 
 
 def index_sort(list_var):
@@ -66,15 +66,16 @@ def bot_response(user_input,sentence_list):
     for i in range(0, len(index)):
       if flatten[index[i]] > 0.0:
         bot_response = bot_response+' '+sentence_list[index[i]]
+        #print(bot_response)
         response_flag = 1
         j = j+1
       if j > 2:
         break  
     if(response_flag==0):
-
+        #print(1)
         return None
     sentence_list.remove(user_input)
-    bot_response = GoogleTranslator(source='english', target='french').translate(bot_response)   
+    bot_response = GoogleTranslator(source='english', target='french').translate(bot_response)
     return bot_response
 
 
@@ -82,7 +83,6 @@ def bot_response(user_input,sentence_list):
 def Search(query):
     search_result_list = list(search(query, tld="co.in", num=10, stop=10, pause=1))
     return search_result_list
-
 
 def chatbot_query(query, index=0):
     try:
@@ -109,6 +109,7 @@ def chatbot_query(query, index=0):
             return chatbot_query(query,index+1)
     except IndexError:
         return fallback
+
 def tokened_text(text):
     #print(link)
     #article = Article(link)
@@ -119,7 +120,6 @@ def tokened_text(text):
     sentence_list = nltk.sent_tokenize(text)
     #print(sentence_list)
     return sentence_list
-    
 
 
 @app.route("/")
@@ -131,29 +131,25 @@ def get_bot_response():
     user_input_french = request.args.get('msg')
     bot2 = Bot(user_input_french)
     return bot2
-    
 
 
 
 
 def Bot(user_input_french):
-    #print("Gaming Bot: I am GAMING BOT. I will answer your queries about ANY GAME. If you want to exit, type Bye!")
     exit_list = ['exit', 'see you later','bye', 'quit', 'break']
     while(True):
         user_input = GoogleTranslator(source='french', target='english').translate(user_input_french)
         if(user_input.lower() in exit_list):
-          #print("Gaming Bot: Chat with you later !")
-            return "Chat with you later !"
+          return "Chat with you later !"
+          break
         else:
           if(greeting_response(user_input)!= None):
-            #print("Gaming Bot: "+greeting_response(user_input))
-              return greeting_response(user_input)
+            return greeting_response(user_input)
           else:              
                 i=0
                 link=Search(user_input)
                 #print(link)
                 if 'youtube' in user_input.lower() or 'link' in user_input.lower() or 'video' in user_input.lower():
-                    #print("Gaming Bot: "+link[0])
                     return link[0]
                 else:                
                     while True:
@@ -162,13 +158,9 @@ def Bot(user_input_french):
                         if bot_response(user_input, lis) != None:
                             break
                         i+=1
-                    #print("Gaming Bot: "+bot_response(user_input,lis))
                     return bot_response(user_input,lis)
-
                 
                 
 if __name__ == "__main__":
     app.run()
-
-
 
